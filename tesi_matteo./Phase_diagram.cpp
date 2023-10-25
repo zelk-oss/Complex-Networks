@@ -2,6 +2,7 @@
 #include <cassert>
 #include "Hopfield_model.hpp"
 
+// sono qui solo per un commento!!! 
 int main()
 {
     srand(time(NULL));

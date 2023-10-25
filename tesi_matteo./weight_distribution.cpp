@@ -49,10 +49,10 @@ int main()
         char filename[100];
         sprintf(filename, "Weight_Distribution/N_625/Pattern_%d.txt");
         file_FA.open(filename, std::fstream::out);
-        file_FA << "peso" << '\t' << "valore" << '\n';
+        file_FA << "peso" << '\t' << "valore" << '\n'; // questa è la prima riga del file. 
         for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
         {
             file_FA << i << ';' << hopfield.Get_Weight(i) << '\n';  
         }
-        file_FA.close();
+        file_FA.close(); // il file quindi avrà due colonne, una con indice del peso a cui facciamo riferimento, l'altra con il peso nella posizione di riferimento 
 }

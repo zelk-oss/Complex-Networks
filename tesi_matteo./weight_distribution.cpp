@@ -23,14 +23,8 @@ int main()
 
     // I add a memories to the network and check the weight distribution. I reiterat it many times
 
-    for (int k = 0; k < N_quad; k++)
+    for (int k = 1; k < 0.2 * N_quad; k++)
     {
-        char filename[100]; 
-        sprintf(filename, "Weight_Distribution/N_625/Pattern_%d.txt", k);
-        file_FA << "peso" << '\t' << "valore" << '\n';
-
-        Hopfield_Network hopfield(N_quad, Temp);
-
         std::vector<int> pattern(N_quad, +1);
         for (int j = 0; j < pattern.size(); j++) // creation of a random pattern
         {
@@ -46,10 +40,13 @@ int main()
         }
         hopfield.AddPattern(pattern);
 
-        file_FA.open(filename, std::fstream::app);
+        char filename[100];
+        sprintf(filename, "Weight_Distribution/N_625/Pattern_%d.txt", k);
+        file_FA.open(filename, std::fstream::out);
+        file_FA << "peso" << '\t' << "valore" << '\n';
         for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
         {
-            file_FA << i << ';' << hopfield.Get_Weight(i) << '\n';
+            file_FA << i << ';' << hopfield.Get_Weight(i) << '\n';  
         }
         file_FA.close();
     }

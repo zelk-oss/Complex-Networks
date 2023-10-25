@@ -84,6 +84,11 @@ int const Hopfield_Network::Get_Weights_Size() // Get the size of Weifhts
     return Weights_Size;
 }
 
+double const Hopfield_Network::Get_Weight(int i)
+{
+    return Weights[i];
+}
+
 void Hopfield_Network::AddPattern(std::vector<int> &pattern) // Add a pattern in Patterns
 {
     Patterns.push_back(pattern);

@@ -32,6 +32,8 @@ public:
 
     int const Get_Weights_Size(); // stampa la dimenzione del vettore Weights
 
+    double const Get_Weight(int i); //ottieni l'i.esimo peso
+
     void AddPattern(std::vector<int> &pattern); // memorizza un ricordo
 
     double const Scalar_Product(int i_pattern, std::vector<int> neuron_); // prodotto scalare tra i-esimo pattern e un vettore

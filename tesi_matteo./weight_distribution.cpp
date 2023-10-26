@@ -24,7 +24,7 @@ int main()
     // I add a memories to the network and check the weight distribution. I reiterat it many times
 
     //for (int k = 1; k < 0.2 * N_quad; k++)
-    for (int j = 1; 100; j++) {
+    for (int j = 1; 10; j++) {
     for (int k = 1; N_pattern; k++) 
     {    
         std::vector<int> pattern(N_quad, +1);
@@ -47,10 +47,12 @@ int main()
     } // repeated generation 100 times 
 
         char filename[100];
-        sprintf(filename, "Weight_Distribution/N_625/Pattern_%d.txt");
+        sprintf(filename, "Weight_Distribution/N_625_Pattern_%d.txt", N_pattern);
         file_FA.open(filename, std::fstream::out);
         file_FA << "peso" << '\t' << "valore" << '\n'; // questa è la prima riga del file. 
-        for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
+        //for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
+        for (int i = 0; i < 10; i++)
+
         {
             file_FA << i << ';' << hopfield.Get_Weight(i) << '\n';  
         }

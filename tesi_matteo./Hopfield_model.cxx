@@ -14,23 +14,20 @@ Hopfield_Network::~Hopfield_Network() = default;
 
 std::vector<int> const Hopfield_Network::Get_Pattern(int i) // get i-pattern
 {
-    std::vector<int> neuron_;
-    neuron_ = Patterns[i];
-    return neuron_;
+    return Patterns[i];
 }
 
 int const Hopfield_Network::Get_N_Patterns() // Get the size of Patterns
 {
-    int get_n_patterns = Patterns.size();
-    return get_n_patterns;
+    return Patterns.size();
 }
 
 double Hopfield_Network::Weight(int i, int j) // set the Weight
 {
-    double weight_ = 0;
+    double weight = 0;
     if (i == j)
     {
-        weight_ = 0;
+        weight = 0;
     }
     else
     {
@@ -40,9 +37,9 @@ double Hopfield_Network::Weight(int i, int j) // set the Weight
             double sum_part = Patterns[k][i] * Patterns[k][j];
             sum = sum + sum_part;
         }
-        weight_ = sum / N_quad;
+        weight = sum / N_quad;
     }
-    return weight_;
+    return weight;
 }
 
 void Hopfield_Network::Update_Weights() // update the Weights
@@ -80,8 +77,7 @@ void const Hopfield_Network::Print_Weights() // print ht e Weight matrix
 
 int const Hopfield_Network::Get_Weights_Size() // Get the size of Weifhts
 {
-    int Weights_Size = Weights.size();
-    return Weights_Size;
+    return Weights.size();
 }
 
 double const Hopfield_Network::Get_Weight(int i)
@@ -95,31 +91,31 @@ void Hopfield_Network::AddPattern(std::vector<int> &pattern) // Add a pattern in
     Update_Weights();
 }
 
-double const Hopfield_Network::Scalar_Product(int i_pattern, std::vector<int> vector_) // scalar product between a general vector and the i-pattern
+double const Hopfield_Network::Scalar_Product(int i_pattern, std::vector<int> vector) // scalar product between a general vector and the i-pattern
 {
-    double add_ = 0;
+    double add = 0;
     for (int j = 0; j < N_quad; j++)
     {
-        int add_par = Patterns[i_pattern][j] * vector_[j];
-        add_ += add_par;
+        int add_par = Patterns[i_pattern][j] * vector[j];
+        add += add_par;
     }
-    add_ /= N_quad;
-    return add_;
+    add /= N_quad;
+    return add;
 }
 
-double const Hopfield_Network::Hamiltonian(std::vector<int> &vector_) // Hamiltonian
+double const Hopfield_Network::Hamiltonian(std::vector<int> &vector) // Hamiltonian
 {
     double sum_1 = 0;
-    for (int i = 0; i < vector_.size(); i++)
+    for (int i = 0; i < vector.size(); i++)
     {
         double sum_2 = 0;
-        for (int j = 0; j < vector_.size(); j++)
+        for (int j = 0; j < vector.size(); j++)
         {
-            double add = Weights[i * N_quad + j] * vector_[j];
+            double add = Weights[i * N_quad + j] * vector[j];
             sum_2 = sum_2 + add;
         }
-        double add_ = vector_[i] * sum_2;
-        sum_1 = sum_1 + add_;
+        double add = vector[i] * sum_2;
+        sum_1 = sum_1 + add;
     }
 
     double hamiltonian = -sum_1 / 2;
@@ -128,7 +124,7 @@ double const Hopfield_Network::Hamiltonian(std::vector<int> &vector_) // Hamilto
 
 std::vector<int> Hopfield_Network::Basic_dinamics(std::vector<int> &neuron) // deterministic dinamics
 {
-    auto final_ = neuron;
+    auto final = neuron;
     double sign = 0;
     int caso = rand() % N_quad;
 
@@ -141,13 +137,13 @@ std::vector<int> Hopfield_Network::Basic_dinamics(std::vector<int> &neuron) // d
 
     if (sign < 0)
     {
-        final_[caso] = -1;
+        final[caso] = -1;
     }
     else
     {
-        final_[caso] = 1;
+        final[caso] = 1;
     }
-    return final_;
+    return final;
 }
 
 std::vector<int> Hopfield_Network::Metropolis(std::vector<int> &neuron) // Metropolis algorithm
@@ -193,11 +189,11 @@ std::vector<int> Hopfield_Network::Glauber(std::vector<int> &neuron) // Glauber 
 
     double delta_H = 2 * neuron[caso] * sum_2;
 
-    double caso_ = (double)rand() / RAND_MAX;
+    double caso = (double)rand() / RAND_MAX;
     double expo = std::exp(delta_H / Temp) + 1;
     double prob_flip = 1 / expo;
 
-    if (caso_ < prob_flip)
+    if (caso < prob_flip)
     {
         return test;
     }
@@ -326,16 +322,3 @@ int Hopfield_Network::Node_Degree(int i)
     }
     return Degree;
 }
-
-int Hopfield_Network::Stop(std::vector<int> neuron)
-{
-    int fermo_ = 0;
-    for (int i = 0; i < Patterns.size(); i++)
-    {
-        if (neuron == Patterns[i])
-        {
-            fermo_ = 1;
-        }
-    }
-    return fermo_;
-};

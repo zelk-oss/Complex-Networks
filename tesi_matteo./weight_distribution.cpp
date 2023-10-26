@@ -52,7 +52,7 @@ int main()
         file_FA.open(filename, std::fstream::app);
         for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
         {
-            file_FA << i << ';' << hopfield.Get_Weight(i) << '\n';
+            file_FA << i << ';' << hopfield.Get_Weight(i)*N_quad << '\n';
         }
         file_FA.close(); // il file quindi avrà cinque colonne, una per ogni peso
     }                    // repeated generation 100 times

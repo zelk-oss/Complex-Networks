@@ -18,7 +18,7 @@ int main()
     std::filesystem::create_directory("Weight_Distribution_N_625");
 
     // for (int k = 1; k < 0.2 * N_quad; k++)
-    for (int a = 1; a < 10; a++)
+    for (int a = 1; a <= 100; a++) // set number of generations
     {
         Hopfield_Network hopfield(N_quad, Temp); // network creation
         // I add a memories to the network and check the weight distribution. I reiterat it many times
@@ -40,17 +40,17 @@ int main()
             hopfield.AddPattern(pattern);
         } // generated N_pattern memories
 
-        // i would like to put generated weights into columns to produce the histo
-        // I save all the 100 outcome for just for five differnte weights
 
         char filename[100];
         sprintf(filename, "Weight_Distribution_N_625/Pattern_%d_%d.txt", N_pattern, a);
         file_FA.open(filename, std::fstream::out);
-        file_FA << "peso 1" << '\t' << "peso 2 " << '\t' << "peso 3" << '\t' << "peso 4" << '\t' << "peso 5" << '\n'; // first raw of the file.
+        file_FA << "indice" << '\t' << "peso" << '\n'; // first row of the file.
         file_FA.close();
 
         file_FA.open(filename, std::fstream::app);
-        for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
+        //for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
+        for (int i = 1; i < N_quad +1; i++)
+        // per Matteo: sto provando per adesso con 625, poi quando leggi i messaggi capiamo cosa deve starci in effetti. 
         {
             file_FA << i << ';' << hopfield.Get_Weight(i)*N_quad << '\n';
         }

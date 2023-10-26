@@ -4,35 +4,36 @@ import numpy as np
 from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
 
+N_quad = 625
 N_generations = 100
 hist_data = []
 
-for i in N_generations: # run over all weights matrix generations 
-    file_path = "data%d.txt"
-    try:
-        weights = []
-        with open(file_path, "r") as file:
-            for line in file:
-                columns = line.strip().split('\t')
-
-                if len(columns) >= 2:
-                    weights.append(columns[1])
-
-        print("Weights in generation x:")
-        print(weights)
-
-    except FileNotFoundError:
-        print(f"The file '{file_path}' was not found.")
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
+for i in range(1, N_generations + 1):  # from 1 to N_gen (included)
+    file_name = f"Weight_Distribution_N_625/Pattern_20_{i}.txt"  
+    with open(file_name, 'r') as file:
+        for line in file:
+            columns = line.split(';')  # Divide la riga in colonne (presumendo uno spazio come delimitatore)
+            if len(columns) >= 2:
+                data_point = float(columns[1])
+                hist_data.append(data_point)  # hist_data will contain second column 
+                                              # from all files in a comfy array 
     
-    hist_data = np.add(hist_data, weights) # weights are summed up in here 
+for gen in range(N_generations):
+    neuron_weights = hist_data[gen::N_quad]   # slicing: split the whole array into single neuron arrays of weights 
+    #print(len(neuron_weights))  # should be = N_generations 
+    
+    # graphic rendering 
+    n_bins = 10
+    neuron_hist = plt.hist(neuron_weights, n_bins)  # adjust number of bins
+    plt.xlabel('weight')
+    plt.ylabel('occurrences')
+    plt.title(f'Distribution of weights for neuron {gen}')
+    # plt.show()
 
-# visualize 
-plt.bar(range(len(hist_data)), hist_data, tick_label=[str(i) for i in data])
+    # probabilities computation 
+    # prob = entries in bin / total occurrences ( = integral)
+    # build array with the probabilities 
+    prob_array = neuron_hist / N_generations
+    # non mi fa fare questa operazioneeeeee
 
-plt.xlabel('unit')
-plt.ylabel('weights sum')
-plt.title('Weights distribution with binomial stuff')
-
-plt.show()
+    print(prob_array)

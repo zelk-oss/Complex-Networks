@@ -48,8 +48,7 @@ int main()
         file_FA.close();
 
         file_FA.open(filename, std::fstream::app);
-        //for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
-        for (int i = 1; i < N_quad +1; i++)
+        for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
         // per Matteo: sto provando per adesso con 625, poi quando leggi i messaggi capiamo cosa deve starci in effetti. 
         {
             file_FA << i << ';' << hopfield.Get_Weight(i)*N_quad << '\n';

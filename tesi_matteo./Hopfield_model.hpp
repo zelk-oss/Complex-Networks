@@ -32,7 +32,7 @@ public:
 
     int const Get_Weights_Size(); // stampa la dimenzione del vettore Weights
 
-    double const Get_Weight(int i); //ottieni l'i.esimo peso
+    double const Get_Weight(int i); // ottieni l'i.esimo peso
 
     void AddPattern(std::vector<int> &pattern); // memorizza un ricordo
 
@@ -57,8 +57,6 @@ public:
     double Global_Clustering();
 
     int Node_Degree(int i);
-
-    int Stop(std::vector<int> neuron); // ferma il ciclo
 };
 
 #endif

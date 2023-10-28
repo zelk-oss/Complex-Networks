@@ -27,7 +27,6 @@ int main()
     Hopfield_Network hopfield(N_quad, Temp);
 
     int funzione = -1;
-    int stop_ = 0;
     std::vector<int> stringa_aggiunta(N_quad, 1);
     std::vector<int> primo_pattern(N_quad, 1);
     // hopfield.AddPattern(primo_pattern);
@@ -83,7 +82,6 @@ int main()
             random[i] = +1;
         }
     }
-    stop_ = hopfield.Stop(random);
 
     int N_Patterns = hopfield.Get_N_Patterns();
 
@@ -141,8 +139,5 @@ int main()
             }
         }
         window.display();
-        //}
-
-        //std::cout << "ciclo finito \n";
     }
 }

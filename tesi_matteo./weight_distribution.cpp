@@ -46,7 +46,7 @@ int main()
         char filename[100];
         sprintf(filename, "Weight_Distribution_N_625/Pattern_%d_%d.txt", N_pattern, a);
         file_FA.open(filename, std::fstream::out);
-        file_FA << "peso 1" << '\t' << "peso 2 " << '\t' << "peso 3" << '\t' << "peso 4" << '\t' << "peso 5" << '\n'; // first raw of the file.
+        file_FA << "indicator" << '\t' << "weight" << '\n'; // first raw of the file.
         file_FA.close();
 
         file_FA.open(filename, std::fstream::app);

@@ -1,28 +1,47 @@
 #include <iostream>
 #include <fstream>
-#include <filesystem>
-#include <cassert>
 #include <algorithm>
+#include <string>
+#include <cmath>
 #include "Hopfield_model.hpp"
 
 int main()
 {
+
+    /******************
+     * inizialization of the parameter
+     ******************/
+
     srand(time(NULL));
 
-    int N_quad = 625; // number of neurons
+    int const N_quad = 400; // number of neurons
+    int const N_link = N_quad * N_quad;
+    double Temp = 0.2;       // temperature
+    int const N_pattern = 55; // number of patter
+    std::fstream file_histo;
 
-    double Temp = 0.2; // temperature
-    int N_pattern = 20;
-    std::fstream file_FA;
+    /******************
+     * creating histogram
+     ******************/
 
-    std::filesystem::create_directory("Weight_Distribution_N_625");
+    std::vector<int> histogram(2 * N_pattern + 1); // we know from theory at the weight can have just discrete value
+    std::string filename = "histogram.csv";
+    file_histo.open(filename, std::fstream::out);
+    file_histo << "bin" << '\t' << "occurrences" << '\n'; // first raw of the file.
+    file_histo.close();
 
-    // for (int k = 1; k < 0.2 * N_quad; k++)
+    /******************
+     * I create a hopfield network, teach it N_pattern random genareted memories and count the occurence of the weight
+     * I repeat it 100 times
+     ******************/
+
     for (int a = 1; a <= 100; a++) // set number of generations
     {
         Hopfield_Network hopfield(N_quad, Temp); // network creation
+
         // I add a memories to the network and check the weight distribution. I reiterat it many times
-        for (int k = 1; k < N_pattern; k++) // the network will learn N_pattern memories
+
+        for (int k = 0; k < N_pattern; k++) // the network will learn N_pattern memories
         {
             std::vector<int> pattern(N_quad, +1);
             for (int j = 0; j < pattern.size(); j++) // creation of a random pattern
@@ -40,19 +59,26 @@ int main()
             hopfield.AddPattern(pattern);
         } // generated N_pattern memories
 
-
-        char filename[100];
-        sprintf(filename, "Weight_Distribution_N_625/Pattern_%d_%d.txt", N_pattern, a);
-        file_FA.open(filename, std::fstream::out);
-        file_FA << "indicator" << '\t' << "weight" << '\n'; // first raw of the file.
-        file_FA.close();
-
-        file_FA.open(filename, std::fstream::app);
-        for (int i = 0; i < hopfield.Get_Weights_Size(); i++)
-        // per Matteo: sto provando per adesso con 625, poi quando leggi i messaggi capiamo cosa deve starci in effetti. 
+        // I count all the weight
+        for (int j = 0; j < hopfield.Get_Weights_Size(); ++j)
         {
-            file_FA << i << ';' << hopfield.Get_Weight(i)*N_quad << '\n';
+            int bin = static_cast<int>((hopfield.Get_Weight(j) * N_quad) + N_pattern);
+            ++histogram[bin];
         }
-        file_FA.close(); // il file quindi avrà cinque colonne, una per ogni peso
-    }                    // repeated generation 100 times
+
+        std::cout << "finish " << a << " iteration\n";
+
+    } // repeated generation 100 times
+
+    /******************
+     *  I export the data
+     ******************/
+
+    file_histo.open(filename, std::fstream::app);
+    for (int i = 0; i < histogram.size(); i++)
+    {
+        file_histo << i - N_pattern << '\t' << histogram[i] << std::endl;
+    }
+    file_histo << "-------" << std::endl;
+    file_histo.close(); // il file quindi avrà cinque colonne, una per ogni peso
 }

@@ -189,11 +189,11 @@ std::vector<int> Hopfield_Network::Glauber(std::vector<int> &neuron) // Glauber 
 
     double delta_H = 2 * neuron[caso] * sum_2;
 
-    double caso = (double)rand() / RAND_MAX;
+    double destiny = (double)rand() / RAND_MAX;
     double expo = std::exp(delta_H / Temp) + 1;
     double prob_flip = 1 / expo;
 
-    if (caso < prob_flip)
+    if (destiny < prob_flip)
     {
         return test;
     }

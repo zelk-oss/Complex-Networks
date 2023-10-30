@@ -16,16 +16,23 @@ int main()
 
     int const N_quad = 400; // number of neurons
     int const N_link = N_quad * N_quad;
-    double Temp = 0.2;       // temperature
-    int const N_pattern = 55; // number of patter
+    double Temp = 0.2;        // temperature
+    int const N_pattern = 20; // number of patter
     std::fstream file_histo;
 
     /******************
-     * creating histogram
+     * creating histograms
      ******************/
 
-    std::vector<int> histogram(2 * N_pattern + 1); // we know from theory at the weight can have just discrete value
-    std::string filename = "histogram.csv";
+    std::vector<std::vector<int>> histograms(N_link); // vector of histograms for the different weight
+    for (int i = 0; i < 2 * N_pattern + 70; i++)
+    { // inizialization of the single histogram with fixed bin
+        for (int j = 0; j < histograms.size(); j++)
+        {
+            histograms[j].push_back(0);
+        }
+    }
+    std::string filename = "histogram.csv"; // create the output file
     file_histo.open(filename, std::fstream::out);
     file_histo << "bin" << '\t' << "occurrences" << '\n'; // first raw of the file.
     file_histo.close();
@@ -58,14 +65,14 @@ int main()
             }
             hopfield.AddPattern(pattern);
         } // generated N_pattern memories
-
-        // I count all the weight
-        for (int j = 0; j < hopfield.Get_Weights_Size(); ++j)
+        std::cout << "start the count\n";
+        // I count all the occurencies for a singles weight
+        for (int i = 0; i < histograms.size(); i++)
         {
-            int bin = static_cast<int>((hopfield.Get_Weight(j) * N_quad) + N_pattern);
-            ++histogram[bin];
+            int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;
+            ++histograms[i][bin];
         }
-
+        std::cout << "stop the count!!!\n";
         std::cout << "finish " << a << " iteration\n";
 
     } // repeated generation 100 times
@@ -75,10 +82,13 @@ int main()
      ******************/
 
     file_histo.open(filename, std::fstream::app);
-    for (int i = 0; i < histogram.size(); i++)
+    for (int i = 0; i < histograms.size(); i++)
     {
-        file_histo << i - N_pattern << '\t' << histogram[i] << std::endl;
+        for (int j = 0; j < histograms[i].size(); j++)
+        {
+            file_histo << j << '\t' << histograms[i][j] << std::endl;
+        }
+        file_histo << '\n';
     }
-    file_histo << "-------" << std::endl;
     file_histo.close(); // il file quindi avrà cinque colonne, una per ogni peso
 }

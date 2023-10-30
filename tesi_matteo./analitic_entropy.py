@@ -7,21 +7,22 @@ filename = "Hopfield entropy"
 N=400
 max_patterns= 400
 
-p = np.arange(0, max_patterns + 1, 1)
+p = np.arange(0, max_patterns + 1, 1)           #set the number of memories
 
-def entropy_sum(N_pattern):
-    entropy_vector = np.zeros(max_patterns + 1)
+def entropy_sum(N_pattern):                     #it does the sum
+    entropy_vector = np.zeros(max_patterns + 1) 
     for x in N_pattern:
         sum = 0
-        for a in range(-x,x):
-            combin = sc.comb(x, (a+x)/2)
-            power = pow(1/2.,x)
-            logartim = np.log(combin*power)
-            sum = sum + combin*power*logartim
-        entropy_vector[x] = sum
+        for a in range(-x,x+1,2):               #the +1 is needed to take also the x value
+            combin = sc.comb(x, (a+x)/2)        #solve the combinatory coefficient
+            power = pow(1/2.,x)                 #solve the power
+            logartim = np.log(combin*power)     #solve the logarithm
+            sum = sum + combin*power*logartim   #combine the previous part
+        entropy_vector[x] = sum                 #do the sum 
     return entropy_vector  
 
 entropy = - N*(N-1)/2 * entropy_sum(p)
+print(entropy_sum(p))
 plt.plot(p, entropy)
 plt.title("Hopfield's entropy S")
 plt.xlabel("p", fontsize=12)

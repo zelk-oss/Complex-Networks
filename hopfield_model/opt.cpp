@@ -19,7 +19,7 @@ int main() {
 
   int const N_quad = 400; // number of neurons
   int const N_link = N_quad * N_quad;
-  int const N_generations = 1000;
+  int const N_generations = 100;
   double Temp = 0.2; // temperature
   // int const N_pattern = 20; // number of patter
   double link_probability;
@@ -65,7 +65,7 @@ int main() {
   /******************************************
    * BIG LOOP BEGINS
    * ***************************************/
-  for (int N_pattern = 10; N_pattern < 60; N_pattern++) {
+  for (int N_pattern = 10; N_pattern < 20; N_pattern++) {
     // clean vectors from previous iteration
     if (!histograms.empty()) {
       std::vector<std::vector<int>> histograms(N_link);

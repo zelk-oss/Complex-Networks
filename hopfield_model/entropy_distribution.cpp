@@ -1,7 +1,8 @@
 // this program produces the file entropy_n_patterns.csv
 // aim: get entropy points as function of number of patterns
 
-// CREDO CHE ORA FUNZIONI MA VOGLIO CHE FACCIA APPEND SOLO DENTRO AL CICLO NON ANCHE OGNI VOLTA CHE RIESEGUO 
+// CREDO CHE ORA FUNZIONI MA VOGLIO CHE FACCIA APPEND SOLO DENTRO AL CICLO NON
+// ANCHE OGNI VOLTA CHE RIESEGUO
 
 #include "tesi_matteo/Hopfield_model.hpp"
 #include <cmath>
@@ -17,9 +18,9 @@ int main() {
 
   srand(time(NULL));
 
-  int const N_quad = 100; // number of neurons
+  int const N_quad = 400; // number of neurons
   int const N_link = N_quad * N_quad;
-  int const N_generations = 100;
+  int const N_generations = 1000;
   double Temp = 0.2; // temperature
   // int const N_pattern = 20; // number of patter
   double link_probability;
@@ -29,26 +30,55 @@ int main() {
                // = N_link
   // will have to removes symmetric elements and the diagonal later
   std::vector<std::vector<int>> entropies(
-      N_link); // vector of entropy values for the different weights
-  std::fstream file_entropy;
+      N_link);       // vector of entropy values for the different weights
   double entropy_Np; // entropy as function of patterns number
-    
-  std::string filename_entropy = "entropy_n_patterns.csv";
+  std::fstream file_entropy;
 
-  /********************
-   * creating histograms
-   ********************/
-  // iterate over variable N_pattern
-  for (int N_pattern = 30; N_pattern < 33; N_pattern++) {
+  std::string filename_entropy = "entropy_n_patterns.csv";
+  // empty file if not clean already
+  file_entropy.open(
+      filename_entropy,
+      std::ios::in |
+          std::ios::out); // Apri il file in modalità lettura/scrittura
+
+  if (file_entropy.is_open()) {
+    // Verifica se il file non è vuoto
+    file_entropy.seekg(0, std::ios::end);
+    if (file_entropy.tellg() > 0) {
+      // Riporta la posizione del puntatore all'inizio del file
+      file_entropy.seekg(0);
+      // Svuota il file sovrascrivendolo con un file vuoto
+      file_entropy.close();
+      file_entropy.open(filename_entropy, std::ios::out | std::ios::trunc);
+      if (file_entropy.is_open()) {
+        std::cout << "File has been emptied." << std::endl;
+      } else {
+        std::cerr << "Impossible to open file in writing mode." << std::endl;
+      }
+    } else {
+      std::cout << "File has been emptied." << std::endl;
+    }
+    file_entropy.close();
+  } else {
+    std::cerr << "Impossible to open file." << std::endl;
+  }
+
+  /******************************************
+   * BIG LOOP BEGINS
+   * ***************************************/
+  for (int N_pattern = 10; N_pattern < 60; N_pattern++) {
     // clean vectors from previous iteration
     if (!histograms.empty()) {
-      histograms.clear();
+      std::vector<std::vector<int>> histograms(N_link);
     }
     if (!entropies.empty()) {
-      entropies.clear();
+      std::vector<std::vector<int>> entropies(N_link);
     }
 
-    for (int i = 0; i < 2 * N_pattern + 1; i++) {
+    for (int i = 0; i < 2 * N_pattern + 1;
+         i++) // max weight = p patterns, minimum = -p. 2N_p + 1 = length
+    { // inizialization of the single histogram with fixed bin: set number of
+      // bins
       for (int j = 0; j < histograms.size(); j++) {
         histograms[j].push_back(0);
       }
@@ -61,7 +91,21 @@ int main() {
 
     for (int i = 0; i < 2 * N_pattern + 1;
          i++) { // inizialization of the single histogram with fixed bin
+      for (int j = 0; j < entropies.size(); j++) {
+        entropies[j].push_back(0);
+      }
+    }
+    for (int i = 0; i < 2 * N_pattern + 1; i++) {
+      for (int j = 0; j < histograms.size(); j++) {
+        histograms[j].push_back(0);
+      }
+    }
 
+    /********************
+     *creation of entropy repository
+     ********************/
+
+    for (int i = 0; i < 2 * N_pattern + 1; i++) {
       for (int j = 0; j < entropies.size(); j++) {
         entropies[j].push_back(0);
       }
@@ -102,15 +146,14 @@ int main() {
         ++histograms[i][bin];
       }
 
-    } // repeated generation many times 
-
+    } // repeated generation many times
 
     /********************
      * find and export the entropy
      *******************/
 
     file_entropy.open(filename_entropy, std::fstream::app);
-    for (int i = 0; i < N_quad; i++) // cicle overe all the rows
+    for (int i = 0; i < N_quad; i++) // cicle over all the rows
     {
       for (int j = i + 1; j < N_quad;
            j++) // cicle over the upper triangular matrix (we cancel the trace
@@ -136,9 +179,11 @@ int main() {
     }
     file_entropy << N_pattern << "," << entropy_Np << '\n';
     file_entropy.close();
+    // reset variables to zero before beginning new loop 
+    link_entropy = 0;
+    link_probability = 0;
+    entropy_Np = 0;
+    std::cout << "Done." <<'\n'; 
   }
   // re-set variables to zero for next cycle.
-  link_entropy = 0;
-  link_probability = 0;
-  entropy_Np = 0;
 }

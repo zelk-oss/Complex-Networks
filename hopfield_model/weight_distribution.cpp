@@ -1,3 +1,6 @@
+// this program produces entropy.csv, hist_for_gauss.csv
+// aim: see distribution of link probability as function of weights 
+
 #include "tesi_matteo/Hopfield_model.hpp"
 #include <cmath>
 #include <fstream>
@@ -12,11 +15,11 @@ int main() {
 
   srand(time(NULL));
 
-  int const N_quad = 100; // number of neurons
+  int const N_quad = 200; // number of neurons
   int const N_link = N_quad * N_quad;
-  int const N_generations = 100;
+  int const N_generations = 100;  
   double Temp = 0.2;        // temperature
-  //int const N_pattern = 20; // number of patter
+  int const N_pattern = 20; // number of patterns 
   double link_probability;
   double link_entropy;
   std::vector<std::vector<int>> histograms(
@@ -33,8 +36,6 @@ int main() {
   /********************
    * creating histograms
    ********************/
-// iterate over variable N_pattern numbers 
-for (int N_pattern = 20; N_pattern < 30; N_pattern++) {
 
   for (int i = 0; i < 2 * N_pattern + 1;
        i++) // max weight = p patterns, minimum = -p. 2N_p + 1 = length
@@ -69,9 +70,9 @@ for (int N_pattern = 20; N_pattern < 30; N_pattern++) {
   }
   std::string filename_entropy = "entropy.csv";
   file_histo.open(filename_entropy, std::fstream::out);
-  file_histo << "N_patterns"
+  file_histo << "bin"
              << ","
-             << "Entropy" << '\n';
+             << "entropy" << '\n'; // first row of the file.
   file_histo.close();
   // same stuff as histo.
 
@@ -158,17 +159,11 @@ for (int N_pattern = 20; N_pattern < 30; N_pattern++) {
               (-1) * link_probability *
               std::log(
                   link_probability); // find the entropy per outcome per link
-          
+          // file_entropy << j << "," << link_entropy << '\n'; // print the value 
           entropy_Np += link_entropy;
         }
       } // before ending the total loop i need to push stuff inside the file 
     }
   }
-  file_entropy << N_pattern << "," << entropy_Np << '\n';
   file_entropy.close();
-}
-// re-set variables to zero for next cycle. 
-link_entropy = 0; 
-link_probability = 0; 
-entropy_Np = 0; 
 }

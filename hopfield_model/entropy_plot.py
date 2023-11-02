@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 x_values = []
 y_values = []
 
-with open('entropy_n_patterns.csv', 'r') as file:
+with open('simulazione_40pti.txt', 'r') as file:
     for line in file:
         if line.strip():
             x, y = map(float, line.strip().split(","))

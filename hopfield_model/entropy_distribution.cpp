@@ -67,7 +67,7 @@ int main() {
   /******************************************
    * BIG LOOP BEGINS
    * ***************************************/
-  for (int N_pattern = 10; N_pattern < 50; N_pattern++) {
+  for (int N_pattern = 50; N_pattern < 71; N_pattern++) {
     // clean vectors from previous iteration
     for (int i = 0; i < 2 * N_pattern + 1; i++) {
       for (int j = 0; j < histograms.size(); j++) {

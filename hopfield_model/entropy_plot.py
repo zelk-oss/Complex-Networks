@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 x_values = []
 y_values = []
 
-with open('dati.txt', 'r') as file:
+with open('entropy_n_patterns.csv', 'r') as file:
     for line in file:
         if line.strip():
-            x, y = map(float, line.strip().split('\t'))
+            x, y = map(float, line.strip().split(","))
             x_values.append(x)
             y_values.append(y)
 

@@ -45,9 +45,7 @@ int main()
 
   std::string filename_histo = "histogram.csv"; // create the output file
   file_histo.open(filename_histo, std::fstream::out);
-  file_histo << "bin"
-             << ","
-             << "occurrences" << '\n'; // first row of the file.
+  file_histo << "bin" << "," << "occurrences" << '\n'; // first row of the file.
   file_histo.close();
 
   std::string filename_gauss = "hist_for_gauss.csv";
@@ -68,9 +66,7 @@ int main()
   }
   std::string filename_entropy = "entropy.csv";
   file_histo.open(filename_entropy, std::fstream::out);
-  file_histo << "bin"
-             << ","
-             << "entropy" << '\n'; // first row of the file.
+  file_histo << "bin"<< ","<< "entropy" << '\n'; // first row of the file.
   file_histo.close();
   // same stuff as histo.
 

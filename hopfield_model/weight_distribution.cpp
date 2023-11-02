@@ -117,21 +117,19 @@ int main()
    ********************/
   file_histo.open(filename_histo, std::fstream::out);
   file_gauss.open(filename_gauss, std::fstream::out);
+
   for (int i = 0; i < N_quad; i++) // cicle over all the rows
   {
     for (int j = i + 1; j < N_quad; j++) // cicle over the columns
     {
-      for (int j = 0; j < histograms[i].size(); j++) // cicle over all the possible outcomes for one weight
+      for (int k = 0; k < histograms[i].size(); k++) // cicle over all the possible outcomes for one weight
       {                                              // note: size of histograms[i] is 41.
                                                      // print upper triangular histograms
-        file_histo << j << "," << histograms[i][j] << '\n';
-        if ((j % 2) == 0)
+        file_histo << k << "," << histograms[i * N_quad + j][k] << '\n';
+        if ((k % 2) == 0)// remove empty bins
         {
           file_gauss << j / 2 << "," << histograms[i][j] << '\n';
         }
-        else
-        {
-        } // remove empty bins
       }
     }
   }

@@ -26,12 +26,10 @@ int main()
   // will have to removes symmetric elements and the diagonal later
   std::fstream file_histo;
   std::fstream file_gauss;
-  std::fstream file_entropy;
 
   /********************
    * creating histograms
    ********************/
-
   for (int i = 0; i < 2 * N_pattern + 1; i++) // max weight = p patterns, minimum = -p. 2N_p + 1 = length
   {                                           // inizialization of the single histogram with fixed bin: set number of bins
     for (int j = 0; j < histograms.size(); j++)
@@ -42,9 +40,7 @@ int main()
 
   std::string filename_histo = "histogram.csv"; // create the output file
   file_histo.open(filename_histo, std::fstream::out);
-  file_histo << "bin"
-             << ","
-             << "occurrences" << '\n'; // first row of the file.
+  file_histo << "bin, occurrences" << '\n'; // first row of the file.
   file_histo.close();
 
   std::string filename_gauss = "hist_for_gauss.csv";
@@ -105,7 +101,7 @@ int main()
         file_histo << k << "," << histograms[i * N_quad + j][k] << '\n';
         if ((k % 2) == 0) // remove empty bins
         {
-          file_gauss << j / 2 << "," << histograms[i][j] << '\n';
+          file_gauss << k / 2 << "," << histograms[i * N_quad + j][k] << '\n';
         }
       }
     }

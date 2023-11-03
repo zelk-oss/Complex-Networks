@@ -1,4 +1,3 @@
-#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,32 +5,37 @@
 
 int main()
 {
-    /*******************
-     * inizialization of the parameter
-     *******************/
+  /*******************
+   * inizialization of the parameter
+   *******************/
 
-    srand(time(NULL));
+  srand(time(NULL));
 
-    int const N_quad = 200; // number of neurons
-    int const N_link = N_quad * N_quad;
-    int const N_generations = 100;
-    double Temp = 0.2;        // temperature
-    int const N_pattern = 20; // number of patterns
-    double link_probability;
-    double link_entropy;
-    std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
-    std::fstream file_histo;
+  int const N_quad = 200; // number of neurons
+  int const N_link = N_quad * N_quad;
+  int const N_generations = 100;
+  double Temp = 0.2;        // temperature
+  int const N_pattern = 20; // number of patterns
+  double prob_distruction = 0;
+  std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
+  std::fstream file_histo;
+  std::fstream file_gauss;
 
-    /********************
-     * creating histograms repository
-     ********************/
+  /********************
+   * creating histograms repository
+   ********************/
 
-    std::string filename_histo = "histogram.csv"; // create the output file
-    file_histo.open(filename_histo, std::fstream::out);
-    file_histo << "bin" << "," << "occurrences" << '\n'; // first row of the file.
-    file_histo.close();
+  std::string filename_histo = "histogram.csv"; // create the output file
+  file_histo.open(filename_histo, std::fstream::out);
+  file_histo << "bin, occurrences" << '\n'; // first row of the file.
+  file_histo.close();
 
-    /********************
+  std::string filename_gauss = "hist_for_gauss.csv";
+  file_gauss.open(filename_gauss, std::fstream::out);
+  file_gauss << "bin, occurrences" << '\n';
+  file_gauss.close();
+
+  /********************
    * I create a hopfield network, teach it N_pattern random genareted memories
    * and count the occurence of the weights I repeat this procedure N_generations
    * times
@@ -60,6 +64,9 @@ int main()
       }
       hopfield.AddPattern(pattern);
     } // generated N_pattern memories
+
+    hopfield.Strong_Weight_Destroyer(prob_distruction); // I dilute the network
+
     // I count all the occurencies for a singles weight
     for (int i = 0; i < N_link; i++)
     {
@@ -69,17 +76,25 @@ int main()
 
   } // repeated generation many times
 
-   file_histo.open(filename_histo, std::fstream::out);
-
+  /********************
+   *  I export the data
+   ********************/
+  file_histo.open(filename_histo, std::fstream::app);
+  file_gauss.open(filename_gauss, std::fstream::app);
   for (int i = 0; i < N_quad; i++) // cicle over all the rows
   {
     for (int j = i + 1; j < N_quad; j++) // cicle over the columns
     {
       for (int k = 0; k < (2 * N_pattern + 1); k++) // cicle over all the possible outcomes for one weight
-      {                                              // note: size of histograms[i] is 41.
+      {                                             // note: size of histograms[i] is 41.
         file_histo << k << "," << histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] << '\n';
+        if ((k % 2) == 0) // remove empty bins
+        {
+          file_gauss << j / 2 << "," << histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] << '\n';
+        }
       }
     }
   }
   file_histo.close();
+  file_gauss.close();
 }

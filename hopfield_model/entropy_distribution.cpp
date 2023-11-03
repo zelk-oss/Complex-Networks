@@ -112,7 +112,7 @@ int main()
     /********************
      *creation of entropy repository
      ********************/
-    for (int i = 0; i < 2 * N_pattern + 1; i++)
+    for (int i = 0; i < 2 * N_pattern + 1; i++) // perchè 3 volte?
     {
       for (int j = 0; j < entropies.size(); j++)
       {

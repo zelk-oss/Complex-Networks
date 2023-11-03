@@ -114,6 +114,7 @@ int main() {
         }
         hopfield.AddPattern(pattern);
       } // generated N_pattern memories
+      
       // I count all the occurences for a single weight
       for (int i = 0; i < histograms.size(); i++) {
         int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;

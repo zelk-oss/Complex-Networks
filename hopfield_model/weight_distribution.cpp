@@ -21,7 +21,7 @@ int main()
   int const N_link = N_quad * N_quad;
   int const N_generations = 1000;
   double Temp = 0.2;        // temperature
-  int const N_pattern = 50; // number of patterns
+  int const N_pattern = 5; // number of patterns
   double link_probability;
   double link_entropy;
   std::vector<std::vector<int>> histograms(N_link); // vector of vectors (histograms) for the different weights. dim = N_link

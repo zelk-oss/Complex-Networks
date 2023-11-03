@@ -1,5 +1,6 @@
 // this program produces entropy.csv, hist_for_gauss.csv
 // aim: see distribution of link probability as function of weights
+// use weights_histo.py to visualise histograms 
 
 #include "tesi_matteo/Hopfield_model.hpp"
 #include <cmath>
@@ -16,12 +17,13 @@ int main()
 
   srand(time(NULL));
 
-  int const N_quad = 200; // number of neurons
+  int const N_quad = 400; // number of neurons
   int const N_link = N_quad * N_quad;
-  int const N_generations = 100;
+  int const N_generations = 1000;
   double Temp = 0.2;        // temperature
-  int const N_pattern = 20; // number of patterns
-
+  int const N_pattern = 5; // number of patterns
+  double link_probability;
+  double link_entropy;
   std::vector<std::vector<int>> histograms(N_link); // vector of vectors (histograms) for the different weights. dim = N_link
   // will have to removes symmetric elements and the diagonal later
   std::fstream file_histo;

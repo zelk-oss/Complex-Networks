@@ -4,32 +4,35 @@
 #include <string>
 #include "Hopfield_model.hpp"
 
- main()
+main()
 {
-    {
-        /*******************
-         *Inizialization of the parameter
-         *******************/
-        int const N_quad = 200; // number of neurons
-        int const N_link = N_quad * N_quad;
-        int const N_generations = 100;
-        double Temp = 0.2; // temperature
-        double prob_distruction = 0.1;
-        std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
-        std::fstream file_entropy;
+    /*******************
+     *Inizialization of the parameter
+     *******************/
+    int const N_quad = 200; // number of neurons
+    int const N_link = N_quad * N_quad;
+    int const N_generations = 100;
+    double Temp = 0.2; // temperature
+    double prob_distruction = 0.1;
+    std::fstream file_entropy;
 
-        srand(time(NULL));
+    srand(time(NULL));
 
-        /********************
-         * Creating histograms repository
-         ********************/
+    /********************
+     * Creating histograms repository
+     ********************/
 
-        std::string filename_entropy = "entropy_n_pattern.csv"; // create the output file
-        file_entropy.open(filename_entropy, std::fstream::out);
-        file_entropy << "bin, occurrences" << '\n'; // first row of the file.
-        file_entropy.close();
+    std::string filename_entropy = "entropy_n_pattern.csv"; // create the output file
+    file_entropy.open(filename_entropy, std::fstream::out);
+    file_entropy << "bin, occurrences" << '\n'; // first row of the file.
+    file_entropy.close();
+
+
+    
 
     for (int N_pattern = 10; N_pattern < 60; N_pattern++)
+    {
+        std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
         double link_probability = 0;
         double link_entropy = 0;
         double entropy_Np = 0;

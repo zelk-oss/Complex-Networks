@@ -21,15 +21,12 @@ int main()
   int const N_generations = 100;
   double Temp = 0.2;        // temperature
   int const N_pattern = 20; // number of patterns
-  double link_probability;
-  double link_entropy;
+
   std::vector<std::vector<int>> histograms(N_link); // vector of vectors (histograms) for the different weights. dim = N_link
   // will have to removes symmetric elements and the diagonal later
-  std::vector<std::vector<int>> entropies(N_link); // vector of entropy values for the different weights
   std::fstream file_histo;
   std::fstream file_gauss;
   std::fstream file_entropy;
-  double entropy_Np; // entropy as function of patterns number
 
   /********************
    * creating histograms
@@ -45,30 +42,15 @@ int main()
 
   std::string filename_histo = "histogram.csv"; // create the output file
   file_histo.open(filename_histo, std::fstream::out);
-  file_histo << "bin" << "," << "occurrences" << '\n'; // first row of the file.
+  file_histo << "bin"
+             << ","
+             << "occurrences" << '\n'; // first row of the file.
   file_histo.close();
 
   std::string filename_gauss = "hist_for_gauss.csv";
   file_gauss.open(filename_gauss, std::fstream::out);
   file_gauss << "bin, occurrences" << '\n';
   file_gauss.close();
-
-  /********************
-   *creation of entropy repository
-   ********************/
-
-  for (int i = 0; i < 2 * N_pattern + 1; i++)
-  { // inizialization of the single histogram with fixed bin
-    for (int j = 0; j < entropies.size(); j++)
-    {
-      entropies[j].push_back(0);
-    }
-  }
-  std::string filename_entropy = "entropy.csv";
-  file_histo.open(filename_entropy, std::fstream::out);
-  file_histo << "bin"<< ","<< "entropy" << '\n'; // first row of the file.
-  file_histo.close();
-  // same stuff as histo.
 
   /********************
    * I create a hopfield network, teach it N_pattern random genareted memories
@@ -116,13 +98,12 @@ int main()
 
   for (int i = 0; i < N_quad; i++) // cicle over all the rows
   {
-    for (int j = i + 1; j < N_quad; j++) // cicle over the columns
+    for (int j = i + 1; j < N_quad; j++) // cicle over the columns, just upper triangular histograms
     {
       for (int k = 0; k < histograms[i].size(); k++) // cicle over all the possible outcomes for one weight
       {                                              // note: size of histograms[i] is 41.
-                                                     // print upper triangular histograms
         file_histo << k << "," << histograms[i * N_quad + j][k] << '\n';
-        if ((k % 2) == 0)// remove empty bins
+        if ((k % 2) == 0) // remove empty bins
         {
           file_gauss << j / 2 << "," << histograms[i][j] << '\n';
         }
@@ -131,30 +112,4 @@ int main()
   }
   file_histo.close();
   file_gauss.close();
-
-  /********************
-   * find and export the entropy
-   ********************/
-
-  file_entropy.open(filename_entropy, std::fstream::out);
-  for (int i = 0; i < N_quad; i++) // cicle overe all the rows
-  {
-    for (int j = i + 1; j < N_quad; j++) // cicle over the upper triangular matrix (we cancel the trace and the symmetry)
-    {
-      for (int k = 0; k < histograms[i].size(); k++) // cicle over the possible weight outcomes
-      {
-        if (histograms[i * N_quad + j][k] == 0)
-        {
-        } // skip probability == 0 cases. we should get rid of nan-s.
-        else
-        {
-          link_probability = histograms[i * N_quad + j][k] / static_cast<double>(N_generations);
-          link_entropy = (-1) * link_probability * std::log(link_probability); // find the entropy per outcome per link
-          // file_entropy << j << "," << link_entropy << '\n'; // print the value
-          entropy_Np += link_entropy;
-        }
-      } // before ending the total loop i need to push stuff inside the file
-    }
-  }
-  file_entropy.close();
 }

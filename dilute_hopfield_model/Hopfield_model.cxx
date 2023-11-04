@@ -209,9 +209,9 @@ void Hopfield_Network::Strong_Weight_Destroyer(double &prob)
     {
         for (int j = i; j < N_quad; j++)
         {
-            double caso = (double)rand() / RAND_MAX;
+            double randomness = (double)rand() / RAND_MAX;
 
-            if (caso < prob)
+            if (randomness < prob)
             {
                 Weights[i * N_quad + j] = 0;
                 Weights[j * N_quad + i] = 0;

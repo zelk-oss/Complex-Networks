@@ -4,7 +4,7 @@
 #include <string>
 #include "Hopfield_model.hpp"
 
-main()
+int main()
 {
     /*******************
      *Inizialization of the parameter

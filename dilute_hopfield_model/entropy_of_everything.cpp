@@ -11,7 +11,7 @@ int main()
     /*******************
      *Inizialization of the parameter
      *******************/
-    int const N_quad = 200; // number of neurons
+    int const N_quad = 100; // number of neurons
     int const N_link = N_quad * N_quad;
     int const N_generations = 100;
     double Temp = 0.2; // temperature
@@ -25,11 +25,10 @@ int main()
     file_entropy << "patterns, probability of distruction, occurrences" << '\n'; // first row of the file.
     file_entropy.close();
 
-    for (int N_pattern = 10; N_pattern < 70; N_pattern++) //I cycle over some differnt number of memories 
+    for (int N_pattern = 20; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
     {
-        for (int distruction = 0; distruction < 100; distruction++) // I cycle over the possible prob of cancel a link from 0 to 0.99
+        for (double prob_distruction = 0.; prob_distruction < 0.80; prob_distruction += 0.01) // I cycle over the possible prob of cancel a link from 0. to 0.99
         {
-            double prob_distruction = distruction / 100.; // prob of cancel a link
             double link_probability = 0;
             double link_entropy = 0;
             double entropy_Np = 0;
@@ -96,9 +95,9 @@ int main()
                 }
             }
             file_entropy.open(filename_entropy, std::fstream::app);
-            file_entropy << prob_distruction << ',' << entropy_Np << '\n';
+            file_entropy << N_pattern << ',' << prob_distruction << ',' << entropy_Np << '\n';
             file_entropy.close();
-            std::cout << prob_distruction << "ciclo finito\n";
+            std::cout << N_pattern << ' ' << prob_distruction << "  ciclo finito\n";
         }
     }
 }

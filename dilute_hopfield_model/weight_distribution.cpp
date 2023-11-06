@@ -16,7 +16,7 @@ int main()
   int const N_generations = 100;
   double Temp = 0.2;        // temperature
   int const N_pattern = 20; // number of patterns
-  double prob_distruction = 0;
+  double prob_distruction = 0.95;
   std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
   std::fstream file_histo;
   std::fstream file_gauss;

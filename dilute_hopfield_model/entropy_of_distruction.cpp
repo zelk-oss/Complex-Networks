@@ -14,9 +14,8 @@ int main()
     int const N_quad = 200; // number of neurons
     int const N_link = N_quad * N_quad;
     int const N_generations = 100;
-    double Temp = 0.2;          // temperature
+    double Temp = 0.2; // temperature
     int const N_pattern = 20;
-    std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
     std::fstream file_entropy;
 
     /********************
@@ -29,10 +28,11 @@ int main()
 
     for (int distruction = 0; distruction < 100; distruction++) // I cycle over the possible prob of cancel a link from 0 to 0.99
     {
-        double prob_distruction = distruction / 100.; //prob of cancel a link
+        double prob_distruction = distruction / 100.; // prob of cancel a link
         double link_probability = 0;
         double link_entropy = 0;
         double entropy_Np = 0;
+        std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
 
         /********************
          * I create a hopfield network, teach it N_pattern random genareted memories
@@ -85,8 +85,7 @@ int main()
                 for (int k = 0; k < (2 * N_pattern + 1); k++) // cicle over all the possible outcomes for one weight
                 {
                     if (histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] != 0)
-                    {   
-                        if(histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] > N_generations)
+                    {
                         link_probability = histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] / static_cast<double>(N_generations);
                         link_entropy = (-1) * link_probability * std::log(link_probability); // find the entropy per outcome per link
                         // file_entropy << k << ',' << link_entropy << '\n';

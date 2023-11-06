@@ -8,7 +8,8 @@
 #include <iostream>
 #include <string>
 
-int main() {
+int main()
+{
 
   auto start = std::chrono::high_resolution_clock::now();
   /********************
@@ -40,25 +41,34 @@ int main() {
       std::ios::in |
           std::ios::out); // Apri il file in modalità lettura/scrittura
 
-  if (file_entropy.is_open()) {
+  if (file_entropy.is_open())
+  {
     // Verifica se il file non è vuoto
     file_entropy.seekg(0, std::ios::end);
-    if (file_entropy.tellg() > 0) {
+    if (file_entropy.tellg() > 0)
+    {
       // Riporta la posizione del puntatore all'inizio del file
       file_entropy.seekg(0);
       // Svuota il file sovrascrivendolo con un file vuoto
       file_entropy.close();
       file_entropy.open(filename_entropy, std::ios::out | std::ios::trunc);
-      if (file_entropy.is_open()) {
+      if (file_entropy.is_open())
+      {
         std::cout << "File has been emptied." << std::endl;
-      } else {
+      }
+      else
+      {
         std::cerr << "Impossible to open file in writing mode." << std::endl;
       }
-    } else {
+    }
+    else
+    {
       std::cout << "File has been emptied." << std::endl;
     }
     file_entropy.close();
-  } else {
+  }
+  else
+  {
     std::cerr << "Impossible to open file." << std::endl;
   }
   // open entropy file and begin the loop
@@ -67,10 +77,13 @@ int main() {
   /******************************************
    * BIG LOOP BEGINS
    * ***************************************/
-  for (int N_pattern = 50; N_pattern < 71; N_pattern++) {
+  for (int N_pattern = 50; N_pattern < 71; N_pattern++)
+  {
     // clean vectors from previous iteration
-    for (int i = 0; i < 2 * N_pattern + 1; i++) {
-      for (int j = 0; j < histograms.size(); j++) {
+    for (int i = 0; i < 2 * N_pattern + 1; i++)
+    {
+      for (int j = 0; j < histograms.size(); j++)
+      {
         histograms[j].clear();           // Clear the vector
         histograms[j].resize(N_quad, 0); // Resize and initialize with zeros
       }
@@ -78,8 +91,10 @@ int main() {
     /********************
      *creation of entropy repository
      ********************/
-    for (int i = 0; i < 2 * N_pattern + 1; i++) {
-      for (int j = 0; j < entropies.size(); j++) {
+    for (int i = 0; i < 2 * N_pattern + 1; i++)
+    {
+      for (int j = 0; j < entropies.size(); j++)
+      {
         entropies[j].clear();           // Clear the vector
         entropies[j].resize(N_quad, 0); // Resize and initialize with zeros
       }
@@ -100,23 +115,25 @@ int main() {
       for (int k = 0; k < N_pattern;
            k++) // the network will learn N_pattern memories
       {
-        std::vector<int> pattern(N_quad,
-                                 +1); // N_quad elements initialized at 1
+        std::vector<int> pattern(N_quad, +1);    // N_quad elements initialized at 1
         for (int j = 0; j < pattern.size(); j++) // creation of a random pattern
         {
           double caso = (double)rand() / RAND_MAX;
           if (caso < 0.5) // p(+1) = 1/2
           {
             pattern[j] = -1;
-          } else {
+          }
+          else
+          {
             pattern[j] = +1;
           }
         }
         hopfield.AddPattern(pattern);
       } // generated N_pattern memories
-      
+
       // I count all the occurences for a single weight
-      for (int i = 0; i < histograms.size(); i++) {
+      for (int i = 0; i < histograms.size(); i++)
+      {
         int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;
         ++histograms[i][bin];
       }
@@ -128,23 +145,21 @@ int main() {
      *******************/
     for (int row = 0; row < N_quad; row++) // loop over all the rows
     {
-      for (int matrix_element = row + 1; matrix_element < N_quad;
-           matrix_element++) // loop over the upper triangular matrix (we
-                             // cancel the trace and the symmetry)
+      for (int matrix_element = row + 1; matrix_element < N_quad; matrix_element++) // loop over the upper triangular matrix (we cancel the trace and the symmetry)
       {
-        for (int hist_bin = 0;
-             hist_bin < histograms[row].size(); // k is a bin position
-             hist_bin++) // loop over the possible weight outcomes
+        for (int hist_bin = 0; hist_bin < histograms[row].size(); hist_bin++) // k is a bin position  // loop over the possible weight outcomes
         {
-          if (histograms[row * N_quad + matrix_element][hist_bin] == 0) {
+          if (histograms[row * N_quad + matrix_element][hist_bin] == 0)
+          {
           } // skip probability == 0 cases. we should get rid of nan-s.
-          else {
+          else
+          {
             link_probability =
                 histograms[row * N_quad + matrix_element][hist_bin] /
                 static_cast<double>(N_generations);
-            if (link_probability >= 1) {
-              std::cout << "Probability >= 1!!!. Istead = " << link_probability
-                        << "\n";
+            if (link_probability >= 1)
+            {
+              std::cout << "Probability >= 1!!!. Istead = " << link_probability << "\n";
             }
             link_entropy = (-1) * link_probability * std::log(link_probability);
             entropy_Np += link_entropy;

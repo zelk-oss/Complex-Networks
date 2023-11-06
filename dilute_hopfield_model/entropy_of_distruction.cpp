@@ -85,7 +85,8 @@ int main()
                 for (int k = 0; k < (2 * N_pattern + 1); k++) // cicle over all the possible outcomes for one weight
                 {
                     if (histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] != 0)
-                    {
+                    {   
+                        if(histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] > N_generations)
                         link_probability = histograms[(i * N_quad + j) * (2 * N_pattern + 1) + k] / static_cast<double>(N_generations);
                         link_entropy = (-1) * link_probability * std::log(link_probability); // find the entropy per outcome per link
                         // file_entropy << k << ',' << link_entropy << '\n';

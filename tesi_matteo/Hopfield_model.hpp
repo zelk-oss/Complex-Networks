@@ -9,54 +9,54 @@ class Hopfield_Network
 {
     double Temp = 0;
     int N_quad = 0;
-    std::vector<std::vector<int>> Patterns; // elenco dei ricordi
-    std::vector<double> Weights;            // matrice pesi
-    std::vector<int> Adjacency;             // matrice adiacenze
+    std::vector<std::vector<int>> Patterns; // Array of patterns
+    std::vector<double> Weights;            // Weight matrix
+    std::vector<int> Adjacency;             // Adjacency matrix
 
 public:
-    Hopfield_Network();
+    Hopfield_Network(); // Constructor
 
-    Hopfield_Network(int n, double T);
+    Hopfield_Network(int n, double T); // Constructor
 
-    ~Hopfield_Network();
+    ~Hopfield_Network(); // Distructor
 
-    std::vector<int> const Get_Pattern(int i); // ottieni i-esimo ricordo
+    std::vector<int> const Get_Pattern(int i); // Get i pattern
 
-    int const Get_N_Patterns(); // ottieni numero ricordi
+    int const Get_N_Patterns(); // Get the number of patterns
 
-    double Weight(int i, int j); // calcola i pesi
+    double Weight(int i, int j); // Compute the weight
 
-    void Update_Weights(); // aggiorna Weights
+    void Update_Weights(); // Update the weight matrix
 
-    void const Print_Weights(); // stampa la matrice dei pesi
+    void const Print_Weights(); // Print the weight matrix
 
-    int const Get_Weights_Size(); // stampa la dimenzione del vettore Weights
+    int const Get_Weights_Size(); // Print the dimension of the Weights matrix
 
-    double const Get_Weight(int i); // ottieni l'i.esimo peso
+    double const Get_Weight(int i); // Get i weight
 
-    void AddPattern(std::vector<int> &pattern); // memorizza un ricordo
+    void AddPattern(std::vector<int> &pattern); // Teach the network a new pattern
 
-    double const Scalar_Product(int i_pattern, std::vector<int> neuron_); // prodotto scalare tra i-esimo pattern e un vettore
+    double const Scalar_Product(int i_pattern, std::vector<int> neuron_); // Scalar product between i pattern and a vector
 
-    double const Hamiltonian(std::vector<int> &neuron_); // Hamiltoniana
+    double const Hamiltonian(std::vector<int> &neuron_); // Hamiltonian
 
-    std::vector<int> Basic_dinamics(std::vector<int> &neuron); // dinamica base
+    std::vector<int> Basic_dinamics(std::vector<int> &neuron); // Basic dynamics
 
     std::vector<int> Metropolis(std::vector<int> &neuron); // Metropolis algorithm
 
     std::vector<int> Glauber(std::vector<int> &neuron); // Glauber algorithm
 
-    void Strong_Weight_Destroyer(double &p);
+    void Strong_Weight_Destroyer(double &p); // Destroy randomly the p part of the total link
 
-    void Weak_Weight_Destroyer(int n);
+    void Weak_Weight_Destroyer(int n); // Destroy n link chosen randomly
 
-    std::vector<int> Laplacian();
+    std::vector<int> Laplacian(); // Compute the laplacian matrix
 
-    double Local_Clustering();
+    double Local_Clustering(); // Compute the local clustering coefficient
 
-    double Global_Clustering();
+    double Global_Clustering(); // Compute the global clustering coefficient
 
-    int Node_Degree(int i);
+    int Node_Degree(int i); // Compute the node degree of i node
 };
 
 #endif

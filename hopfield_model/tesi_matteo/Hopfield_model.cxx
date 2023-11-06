@@ -6,23 +6,23 @@
 #include <cassert>
 #include <algorithm>
 
-Hopfield_Network::Hopfield_Network() = default;
+Hopfield_Network::Hopfield_Network() = default; // Constructor
 
-Hopfield_Network::Hopfield_Network(int n, double T) : N_quad(n), Temp(T){};
+Hopfield_Network::Hopfield_Network(int n, double T) : N_quad(n), Temp(T){}; // Constructor
 
-Hopfield_Network::~Hopfield_Network() = default;
+Hopfield_Network::~Hopfield_Network() = default; // Destructor
 
-std::vector<int> const Hopfield_Network::Get_Pattern(int i) // get i-pattern
+std::vector<int> const Hopfield_Network::Get_Pattern(int i) // Get i pattern
 {
     return Patterns[i];
 }
 
-int const Hopfield_Network::Get_N_Patterns() // Get the size of Patterns
+int const Hopfield_Network::Get_N_Patterns() // Get the size of Patterns array
 {
     return Patterns.size();
 }
 
-double Hopfield_Network::Weight(int i, int j) // set the Weight
+double Hopfield_Network::Weight(int i, int j) // Compute the Weight
 {
     double weight = 0;
     if (i == j)
@@ -34,15 +34,15 @@ double Hopfield_Network::Weight(int i, int j) // set the Weight
         double sum = 0;
         for (int k = 0; k < Patterns.size(); k++)
         {
-            double sum_part = Patterns[k][i] * Patterns[k][j];
-            sum = sum + sum_part;
+            double part_sum = Patterns[k][i] * Patterns[k][j];
+            sum = sum + part_sum;
         }
         weight = sum / N_quad;
     }
     return weight;
 }
 
-void Hopfield_Network::Update_Weights() // update the Weights
+void Hopfield_Network::Update_Weights() // Update the Weights
 {
     Weights.clear();
     Adjacency.clear();
@@ -63,7 +63,7 @@ void Hopfield_Network::Update_Weights() // update the Weights
     }
 }
 
-void const Hopfield_Network::Print_Weights() // print ht e Weight matrix
+void const Hopfield_Network::Print_Weights() // Print the Weight matrix
 {
     for (int i = 0; i < N_quad; i++)
     {
@@ -75,23 +75,23 @@ void const Hopfield_Network::Print_Weights() // print ht e Weight matrix
     }
 }
 
-int const Hopfield_Network::Get_Weights_Size() // Get the size of Weifhts
+int const Hopfield_Network::Get_Weights_Size() // Get the size of Weights
 {
     return Weights.size();
 }
 
-double const Hopfield_Network::Get_Weight(int i)
+double const Hopfield_Network::Get_Weight(int i) // Get the i weight
 {
     return Weights[i];
 }
 
-void Hopfield_Network::AddPattern(std::vector<int> &pattern) // Add a pattern in Patterns
+void Hopfield_Network::AddPattern(std::vector<int> &pattern) // Teach a new pattern to the network
 {
     Patterns.push_back(pattern);
     Update_Weights();
 }
 
-double const Hopfield_Network::Scalar_Product(int i_pattern, std::vector<int> vector) // scalar product between a general vector and the i-pattern
+double const Hopfield_Network::Scalar_Product(int i_pattern, std::vector<int> vector) // Scalar product between a general vector and the i pattern
 {
     double add = 0;
     for (int j = 0; j < N_quad; j++)
@@ -126,22 +126,22 @@ std::vector<int> Hopfield_Network::Basic_dinamics(std::vector<int> &neuron) // d
 {
     auto final = neuron;
     double sign = 0;
-    int caso = rand() % N_quad;
+    int randomness = rand() % N_quad;
 
     for (int j = 0; j < neuron.size(); j++)
     {
-        double weight_ij = Weights[caso * N_quad + j];
+        double weight_ij = Weights[randomness * N_quad + j];
         double sum = weight_ij * neuron[j];
         sign += sum;
     }
 
     if (sign < 0)
     {
-        final[caso] = -1;
+        final[randomness] = -1;
     }
     else
     {
-        final[caso] = 1;
+        final[randomness] = 1;
     }
     return final;
 }
@@ -149,8 +149,8 @@ std::vector<int> Hopfield_Network::Basic_dinamics(std::vector<int> &neuron) // d
 std::vector<int> Hopfield_Network::Metropolis(std::vector<int> &neuron) // Metropolis algorithm
 {
     std::vector<int> test = neuron;
-    int caso = rand() % N_quad;
-    test[caso] = -test[caso];
+    int destiny = rand() % N_quad;
+    test[destiny] = -test[destiny];
 
     double delta_H = Hamiltonian(test) - Hamiltonian(neuron);
 
@@ -160,10 +160,10 @@ std::vector<int> Hopfield_Network::Metropolis(std::vector<int> &neuron) // Metro
     }
     else
     {
-        double caso = (double)rand() / RAND_MAX;
+        double randomness = (double)rand() / RAND_MAX;
         double expo = std::exp(-delta_H / Temp);
 
-        if (caso < expo)
+        if (randomness < expo)
         {
             return test;
         }
@@ -177,23 +177,23 @@ std::vector<int> Hopfield_Network::Metropolis(std::vector<int> &neuron) // Metro
 std::vector<int> Hopfield_Network::Glauber(std::vector<int> &neuron) // Glauber algorithm
 {
     std::vector<int> test = neuron;
-    int caso = rand() % N_quad;
-    test[caso] = -test[caso];
+    int destiny = rand() % N_quad;
+    test[destiny] = -test[destiny];
 
     double sum_2 = 0;
     for (int j = 0; j < test.size(); j++)
     {
-        double add = Weights[caso * N_quad + j] * test[j];
+        double add = Weights[destiny * N_quad + j] * test[j];
         sum_2 += add;
     }
 
-    double delta_H = 2 * neuron[caso] * sum_2;
+    double delta_H = 2 * neuron[destiny] * sum_2;
 
-    double destiny = (double)rand() / RAND_MAX;
+    double randomness = (double)rand() / RAND_MAX;
     double expo = std::exp(delta_H / Temp) + 1;
     double prob_flip = 1 / expo;
 
-    if (destiny < prob_flip)
+    if (randomness < prob_flip)
     {
         return test;
     }
@@ -203,15 +203,15 @@ std::vector<int> Hopfield_Network::Glauber(std::vector<int> &neuron) // Glauber 
     }
 }
 
-void Hopfield_Network::Strong_Weight_Destroyer(double &prob)
+void Hopfield_Network::Strong_Weight_Destroyer(double &prob) // Destroy randomly the p part of the total link
 {
     for (int i = 0; i < N_quad; i++)
     {
         for (int j = i; j < N_quad; j++)
         {
-            double caso = (double)rand() / RAND_MAX;
+            double randomness = (double)rand() / RAND_MAX;
 
-            if (caso < prob)
+            if (randomness < prob)
             {
                 Weights[i * N_quad + j] = 0;
                 Weights[j * N_quad + i] = 0;
@@ -229,7 +229,7 @@ void Hopfield_Network::Strong_Weight_Destroyer(double &prob)
     }
 }
 
-void Hopfield_Network::Weak_Weight_Destroyer(int n)
+void Hopfield_Network::Weak_Weight_Destroyer(int n) // Destroy randomly the n link
 {
     for (int k = 0; k < n; k++)
     {
@@ -240,7 +240,7 @@ void Hopfield_Network::Weak_Weight_Destroyer(int n)
     }
 }
 
-std::vector<int> Hopfield_Network::Laplacian()
+std::vector<int> Hopfield_Network::Laplacian() // Compute the laplacian matrix
 {
     std::vector<int> laplacian;
     for (int i = 0; i < Adjacency.size(); i++)
@@ -258,7 +258,7 @@ std::vector<int> Hopfield_Network::Laplacian()
     }
     return laplacian;
 }
-double Hopfield_Network::Local_Clustering()
+double Hopfield_Network::Local_Clustering() // Compute the local clustering
 {
     double local = 0.;
     int num = 0;
@@ -286,7 +286,7 @@ double Hopfield_Network::Local_Clustering()
     return local / N_quad;
 }
 
-double Hopfield_Network::Global_Clustering()
+double Hopfield_Network::Global_Clustering() // Compute the global clustering
 {
     int num = 0;
     int den = 0;
@@ -313,7 +313,7 @@ double Hopfield_Network::Global_Clustering()
     return cluster;
 }
 
-int Hopfield_Network::Node_Degree(int i)
+int Hopfield_Network::Node_Degree(int i) // Compute the degree of the i node
 {
     int Degree = 0;
     for (int k = 0; k < N_quad; k++)

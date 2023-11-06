@@ -8,12 +8,13 @@ import scipy
 x_values = []
 y_values = []
 
-with open('distruction_entropy_plot.csv', 'r') as file:
+with open('entropy_prob_distruction.csv', 'r') as file:
     for line in file:
         if line.strip():
             x, y = map(float, line.strip().split(","))
-            x_values.append(x)
+            x_values.append(1-x)
             y_values.append(y)
+# analytic 
 
 plt.plot(x_values, y_values, marker='o', linestyle='-')
 plt.title('Entropy(p)')

@@ -27,9 +27,6 @@ int main()
     file_entropy << "bin, occurrences" << '\n'; // first row of the file.
     file_entropy.close();
 
-
-    
-
     for (int N_pattern = 10; N_pattern < 60; N_pattern++)
     {
         std::vector<int> histograms(N_link * (2 * N_pattern + 1)); // vector (histograms) for the different weights.
@@ -72,7 +69,7 @@ int main()
             // I count all the occurencies for a singles weight
             for (int i = 0; i < N_link; i++)
             {
-                int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;
+                int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad * (1 - prob_distruction)) + N_pattern;
                 ++histograms[bin + i * (2 * N_pattern + 1)];
             }
 

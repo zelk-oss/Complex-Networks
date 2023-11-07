@@ -21,13 +21,13 @@ int main()
      * Creating histograms repository
      ********************/
     std::string filename_entropy = "all_parameter_entropy.csv"; // create the output file
-    file_entropy.open(filename_entropy, std::fstream::out);
+    /* file_entropy.open(filename_entropy, std::fstream::out);
     file_entropy << "patterns, probability of distruction, occurrences" << '\n'; // first row of the file.
-    file_entropy.close();
+    file_entropy.close(); */
 
-    for (int N_pattern = 20; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
+    for (int N_pattern = 50; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
     {
-        for (double prob_distruction = 0.; prob_distruction < 0.80; prob_distruction += 0.01) // I cycle over the possible prob of cancel a link from 0. to 0.99
+        for (double prob_distruction = 0.; prob_distruction < 1.; prob_distruction += 0.01) // I cycle over the possible prob of cancel a link from 0. to 0.99
         {
             double link_probability = 0;
             double link_entropy = 0;
@@ -69,7 +69,7 @@ int main()
                 // I count all the occurencies for a singles weight
                 for (int i = 0; i < N_link; i++)
                 {
-                    int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;
+                    int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad * (1 - prob_distruction)) + N_pattern;
                     ++histograms[bin + i * (2 * N_pattern + 1)];
                 }
 

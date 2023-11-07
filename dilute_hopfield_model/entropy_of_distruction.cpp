@@ -69,7 +69,7 @@ int main()
             // I count all the occurencies for a singles weight
             for (int i = 0; i < N_link; i++)
             {
-                int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad) + N_pattern;
+                int bin = static_cast<int>(hopfield.Get_Weight(i) * N_quad * (1 - prob_distruction)) + N_pattern;
                 ++histograms[bin + i * (2 * N_pattern + 1)];
             }
 

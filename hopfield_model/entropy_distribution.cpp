@@ -30,11 +30,11 @@ int main()
   double entropy_Np;                               // entropy as function of patterns number
   std::fstream file_entropy;
 
-  for (int cycle = 1; cycle < 6; cycle++)
+  for (int cycle = 3; cycle < 6; cycle++)
   {
     std::string filename_entropy = "entropy_n_patterns_" + std::to_string(cycle) + ".csv";
     // empty file if not clean already
-    file_entropy.open(filename_entropy, std::fstream::out); // Apri il file in modalità lettura/scrittura
+    file_entropy.open(filename_entropy, std::fstream::app); // Apri il file in modalità lettura/scrittura
     file_entropy.close();
 
     // open entropy file and begin the loop
@@ -42,7 +42,7 @@ int main()
     /******************************************
      * BIG LOOP BEGINS
      * ***************************************/
-    for (int N_pattern = 10; N_pattern < 70; N_pattern++)
+    for (int N_pattern = 58; N_pattern < 70; N_pattern++)
     {
       // clean vectors from previous iteration
       for (int i = 0; i < 2 * N_pattern + 1; i++)

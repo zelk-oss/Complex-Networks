@@ -22,9 +22,9 @@ def entropy_sum(N_pattern):                     #it does the sum
     return entropy_vector  
 
 entropy = - N*(N-1)/2 * entropy_sum(p)
-print(entropy_sum(p))
-plt.plot(p, entropy)
-plt.title("Hopfield's entropy S")
-plt.xlabel("p", fontsize=12)
-plt.ylabel("S", fontsize=12)
+plt.plot(p, entropy, linewidth=3, color='red')
+plt.title("Hopfield's entropy analytic behaviour")
+plt.xlabel("Stored patterns", fontsize=12)
+plt.ylabel("Entropy", fontsize=12)
+plt.grid()
 plt.show()

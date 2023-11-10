@@ -21,7 +21,7 @@ int main()
   int const N_link = N_quad * N_quad;
   int const N_generations = 1000;
   double Temp = 0.2;        // temperature
-  int const N_pattern = 5; // number of patterns
+  int const N_pattern = 30; // number of patterns
   double link_probability;
   double link_entropy;
   std::vector<std::vector<int>> histograms(N_link); // vector of vectors (histograms) for the different weights. dim = N_link
@@ -41,9 +41,9 @@ int main()
   } // produces N_link lines of 41 0s. so we are ready to fill them up.
 
   std::string filename_histo = "histogram.csv"; // create the output file
-  file_histo.open(filename_histo, std::fstream::out);
-  file_histo << "bin, occurrences" << '\n'; // first row of the file.
-  file_histo.close();
+  //file_histo.open(filename_histo, std::fstream::out);
+  //file_histo << "bin, occurrences" << '\n'; // first row of the file.
+  //file_histo.close();
 
   std::string filename_gauss = "hist_for_gauss.csv";
   file_gauss.open(filename_gauss, std::fstream::out);
@@ -91,7 +91,7 @@ int main()
   /********************
    *  I export the data
    ********************/
-  file_histo.open(filename_histo, std::fstream::out);
+  //file_histo.open(filename_histo, std::fstream::out);
   file_gauss.open(filename_gauss, std::fstream::out);
 
   for (int i = 0; i < N_quad; i++) // cicle over all the rows
@@ -100,7 +100,7 @@ int main()
     {
       for (int k = 0; k < histograms[i].size(); k++) // cicle over all the possible outcomes for one weight
       {                                              // note: size of histograms[i] is 41.
-        file_histo << k << "," << histograms[i * N_quad + j][k] << '\n';
+        //file_histo << k << "," << histograms[i * N_quad + j][k] << '\n';
         if ((k % 2) == 0) // remove empty bins
         {
           file_gauss << k / 2 << "," << histograms[i * N_quad + j][k] << '\n';
@@ -108,6 +108,6 @@ int main()
       }
     }
   }
-  file_histo.close();
+ // file_histo.close();
   file_gauss.close();
 }

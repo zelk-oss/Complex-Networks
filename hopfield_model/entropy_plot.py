@@ -1,39 +1,33 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 import scipy.special as sc
-import math
 from scipy.optimize import curve_fit
 
 # this script will open the file with entropy points as function of number of patterns 
 # and plot the points. 
 """ create some arrays """
-x_values = np.empty(60)
-y_values = np.empty(60)
+x_average = np.empty(60)
+y_average = np.empty(60)
 y_error = np.empty(60)
+y_read = np.empty(60)
+x_read = np.empty(60)
 
 """ fill the array with the mean value of 5 simulation """
-for i in range(1,5):
-    fileinput = "entropy_n_pattern_" + i + ".csv"
+for i in range(1,6):
+    fileinput = "entropy_n_patterns_" + str(i) + ".csv"
     file = open(fileinput, 'r')
-    for line in file:
-        x, y = map(float, line.strip().split(","))  
-        x_values = x_values + x
-        y_values = y_values + y
+    line = file.readlines()
+    for row in range(0,60):
+        x_read = float(line[row].strip().split(",")[0])
+        y_read = float(line[row].strip().split(",")[1])
+        x_average[row] += x_read
+        y_average[row] += y_read
+        y_error[row] += (y_read[row] - y_average[row])**2
     file.close()
 
-x_values /= 4
-y_values /= 4
-
-"""compute the error """
-for i in range(1,5):
-    fileinput = "entropy_n_pattern_" + i + ".csv"
-    file = open(fileinput, 'r')
-    for line in file:
-        x, y = map(float, line.strip().split(","))  
-        y_error = x_values + pow(y - y_values, 2)
-    file.close()
-
-y_error = math.sqrt(y_error / 4)
+x_average /= 5
+y_average /= 5
+y_error = np.sqrt(y_error / 5)
 
 # analytic 
 filename = "Hopfield entropy"
@@ -55,12 +49,12 @@ def entropy_sum(N_pattern):                     #it does the sum
         entropy_vector[x-10] = sum                 #do the sum 
     return entropy_vector  
 
-def f(x, N):
-    return - N*(N-1)/2 * entropy_sum(x)
 
 entropy = - N*(N-1)/2 * entropy_sum(p)
 
-""" Run a first least-square fit (disregard dx). """
+""" def f(x, N):
+    return - N*(N-1)/2 * entropy_sum(x)
+# Run a first least-square fit (disregard dx).
 popt, pcov = curve_fit(f, x_values, y_values, (400), y_error)
 # Iteratively update the errors and refit.
 """
@@ -72,8 +66,8 @@ chisq = (((y - f(x, *popt))/y_error )**2.).sum()
 print(popt)
 print(np.sqrt(pcov.diagonal()))
 print(chisq)
-
-plt.plot(x_values, y_values, marker='o', linestyle='-')
+ """
+plt.errorbar(x_average, y_average, marker='o')
 plt.plot(p, entropy)
 plt.title('Entropy(p)')
 plt.xlabel('p')

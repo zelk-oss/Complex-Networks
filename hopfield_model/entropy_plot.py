@@ -1,26 +1,49 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 import scipy.special as sc
-import scipy
+from scipy.optimize import curve_fit
 
 # this script will open the file with entropy points as function of number of patterns 
 # and plot the points. 
-x_values = []
-y_values = []
+""" create some arrays """
+x_average = np.empty(60)
+y_average = np.empty(60)
+y_error = np.ones(60)
 
-with open('simulazione_40pti.txt', 'r') as file:
-    for line in file:
-        if line.strip():
-            x, y = map(float, line.strip().split(","))
-            x_values.append(x)
-            y_values.append(y)
+
+""" fill the array with the mean value of 5 simulation """
+for i in range(1,6):
+    fileinput = "entropy_n_patterns_" + str(i) + ".csv"
+    file = open(fileinput, 'r')
+    line = file.readlines()
+    for row in range(0,60):
+        x_read = float(line[row].strip().split(",")[0])
+        y_read = float(line[row].strip().split(",")[1])
+        x_average[row] += x_read
+        y_average[row] += y_read
+    file.close()
+
+x_average /= 5.
+y_average /= 5.
+
+""" compute the errors """
+for i in range(1,6):
+    fileinput = "entropy_n_patterns_" + str(i) + ".csv"
+    file = open(fileinput, 'r')
+    line = file.readlines()
+    for row in range(0,60):
+        y_read = float(line[row].strip().split(",")[1])
+        y_error[row] += pow(y_read - y_average[row],2)
+    file.close()
+
+y_error = np.sqrt(y_error / 5.)
+
 # analytic 
 filename = "Hopfield entropy"
 N=400
-max_patterns= 70
+max_patterns= 69
 
 p = np.arange(10, max_patterns + 1, 1)           #set the number of memories
-print(len(p))
 
 def entropy_sum(N_pattern):                     #it does the sum
     entropy_vector = np.zeros(max_patterns + 1 -10) 
@@ -34,13 +57,17 @@ def entropy_sum(N_pattern):                     #it does the sum
         entropy_vector[x-10] = sum                 #do the sum 
     return entropy_vector  
 
-entropy = - N*(N-1)/2 * entropy_sum(p)
-print(entropy)
 
-plt.plot(x_values, y_values, marker='o', linestyle='-')
+entropy = - N*(N-1)/2 * entropy_sum(p)
+
+chisq = (((y_average - entropy)/y_error)**2.).sum()
+# Print the fit output.
+print(chisq/5)
+
+plt.errorbar(x_average, y_average,y_error, marker='o')
 plt.plot(p, entropy)
-plt.title('Entropy(p)')
-plt.xlabel('p')
+plt.title('Entropy function')
+plt.xlabel('Number of pattern')
 plt.ylabel('Entropy')
 plt.grid(True)
 plt.show()

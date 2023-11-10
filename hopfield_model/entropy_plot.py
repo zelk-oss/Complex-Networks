@@ -52,10 +52,10 @@ def entropy_sum(N_pattern):                     #it does the sum
 
 entropy = - N*(N-1)/2 * entropy_sum(p)
 
-""" def f(x, N):
+def f(x, N):
     return - N*(N-1)/2 * entropy_sum(x)
 # Run a first least-square fit (disregard dx).
-popt, pcov = curve_fit(f, x_values, y_values, (400), y_error)
+popt, pcov = curve_fit(f, x_average, y_average, (400), y_error)
 # Iteratively update the errors and refit.
 """
 # l’elemento 0 dell’array è proprio la derivata di cui abbiamo bisogno per combinare gli errori
@@ -66,7 +66,7 @@ chisq = (((y - f(x, *popt))/y_error )**2.).sum()
 print(popt)
 print(np.sqrt(pcov.diagonal()))
 print(chisq)
- """
+
 plt.errorbar(x_average, y_average, marker='o')
 plt.plot(p, entropy)
 plt.title('Entropy(p)')

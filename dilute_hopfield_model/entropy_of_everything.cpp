@@ -25,7 +25,7 @@ int main()
     file_entropy << "patterns, probability of distruction, occurrences" << '\n'; // first row of the file.
     file_entropy.close(); */
 
-    for (int N_pattern = 380; N_pattern < 383; N_pattern++) // I cycle over some differnt number of memories
+    for (int N_pattern = 10; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
     {
         for (double prob_distruction = 0.; prob_distruction < 1.; prob_distruction += 0.01) // I cycle over the possible prob of cancel a link from 0. to 0.99
         {

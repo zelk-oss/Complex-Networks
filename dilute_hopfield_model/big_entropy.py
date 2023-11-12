@@ -46,7 +46,7 @@ plt.ylabel('Entropy')
 plt.grid(True)
 legend =plt.legend(loc='upper right')
 legend.get_frame().set_alpha(0.9)
-#plt.show()
+plt.show()
 
 #####################
 # inizia nuovo grafico 
@@ -83,19 +83,19 @@ probs_for_fixed_N_pattern_60 = []
 entropies_for_fixed_N_pattern_60 = []
 
 for i, N in enumerate(N_pattern):
-    if N == 20:
+    if N == 21:
         if (i%2 == 0): 
             probs_for_fixed_N_pattern_20.append(1-prob_creation[i])
             entropies_for_fixed_N_pattern_20.append(entropies[i])
 
 for i, N in enumerate(N_pattern):
-    if N == 40:
+    if N == 43:
         if (i%2 == 0): 
             probs_for_fixed_N_pattern_40.append(1-prob_creation[i])
             entropies_for_fixed_N_pattern_40.append(entropies[i])
 
 for i, N in enumerate(N_pattern):
-    if N == 60:
+    if N == 65:
         if (i%2 == 0): 
             probs_for_fixed_N_pattern_60.append(1-prob_creation[i])
             entropies_for_fixed_N_pattern_60.append(entropies[i])
@@ -104,7 +104,7 @@ plt.clf()
 
 # Crea un plot dell'entropia in funzione di tutti i valori della probabilità per N_pattern fisso
 plt.plot(probs_for_fixed_N_pattern_20, entropies_for_fixed_N_pattern_20, marker='o', linestyle='-', label=f'N_pattern = {20}', color = '#22A884FF')
-plt.plot(probs_for_fixed_N_pattern_40, entropies_for_fixed_N_pattern_40, marker='o', linestyle='-', label=f'N_pattern = {40}', color = '#7AD151FF')
+plt.plot(probs_for_fixed_N_pattern_40, entropies_for_fixed_N_pattern_40, marker='o', linestyle='-', label=f'N_pattern = {41}', color = '#7AD151FF')
 plt.plot(probs_for_fixed_N_pattern_60, entropies_for_fixed_N_pattern_60, marker='o', linestyle='-', label=f'N_pattern = {60}', color = '#FDE725FF')
 
 plt.title(f'Entropy function - fixed number of patterns')

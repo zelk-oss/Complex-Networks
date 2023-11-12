@@ -38,7 +38,7 @@ for i, (p, entropies) in enumerate(entropies_dict.items()):
     N = len(entropies)
     x = np.linspace(1, N, N)  # Crea un array da 1 a N per l'asse x
     color = cmap(i / len(entropies_dict))  # Calcola il colore dalla mappa di colori
-    plt.plot(x, entropies, marker='o', label=f'p = {p:.2f}', color=color)
+    plt.plot(x + 20, entropies, marker='o', label=f'p = {p:.2f}', color=color)
 
 plt.title('Entropy - fixed connection probabilities')
 plt.xlabel('Number of patterns')

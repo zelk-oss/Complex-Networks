@@ -64,10 +64,11 @@ chisq = (((y_average - entropy)/y_error)**2.).sum()
 # Print the fit output.
 print(chisq/5)
 
-plt.errorbar(x_average, y_average,y_error, marker='o')
-plt.plot(p, entropy)
+plt.errorbar(x_average, y_average,y_error, marker='o',label="data")
+plt.plot(p, entropy,label="theoretical function")
 plt.title('Entropy function')
 plt.xlabel('Number of pattern')
 plt.ylabel('Entropy')
 plt.grid(True)
+plt.legend()
 plt.show()

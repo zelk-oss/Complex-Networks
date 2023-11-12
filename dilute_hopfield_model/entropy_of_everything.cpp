@@ -11,9 +11,9 @@ int main()
     /*******************
      *Inizialization of the parameter
      *******************/
-    int const N_quad = 100; // number of neurons
+    int const N_quad = 400; // number of neurons
     int const N_link = N_quad * N_quad;
-    int const N_generations = 100;
+    int const N_generations = 500;
     double Temp = 0.2; // temperature
     std::fstream file_entropy;
 
@@ -25,7 +25,7 @@ int main()
     file_entropy << "patterns, probability of distruction, occurrences" << '\n'; // first row of the file.
     file_entropy.close(); */
 
-    for (int N_pattern = 50; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
+    for (int N_pattern = 10; N_pattern < 70; N_pattern++) // I cycle over some differnt number of memories
     {
         for (double prob_distruction = 0.; prob_distruction < 1.; prob_distruction += 0.01) // I cycle over the possible prob of cancel a link from 0. to 0.99
         {

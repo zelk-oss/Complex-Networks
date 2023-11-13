@@ -11,15 +11,13 @@ entropies = []
 #valori_interessanti = [0.0, 0.01, 0.1, 0.3, 0.5, 0.7, 0.90]  # Sostituisci con i valori desiderati
 valori_interessanti = [0.01, 0.2, 0.4, 0.6, 0.8, 0.99]
 
-with open('all_parameter_entropy.csv', 'r') as file:
-    next(file)
+with open('entropy_n_pattern.csv', 'r') as file:
     for line in file:
         row = line.strip().split(",")
-        N_pattern.append(float(row[0]))
-        prob = round(1. - float(row[1]),2)
-        if prob in valori_interessanti:
-            prob_creation.append(prob)
-            entropies.append(float(row[2]))
+        N_pattern.append(float(row[1]))
+        prob = round(1. - float(row[0]),2)
+        prob_creation.append(prob)
+        entropies.append(float(row[2]))
 # Crea un dizionario per raggruppare le entropie in base a prob_creation
 entropies_dict = {}
 for p, entropy in zip(prob_creation, entropies):
@@ -38,7 +36,7 @@ for i, (p, entropies) in enumerate(entropies_dict.items()):
     N = len(entropies)
     x = np.linspace(1, N, N)  # Crea un array da 1 a N per l'asse x
     color = cmap(i / len(entropies_dict))  # Calcola il colore dalla mappa di colori
-    plt.plot(x + 20, entropies, marker='o', label=f'p = {p:.2f}', color=color)
+    plt.plot(x + 20, entropies, marker='o', label=f'ρ = {p:.2f}', color=color)
 
 plt.title('Entropy - fixed connection probabilities')
 plt.xlabel('Number of patterns')
@@ -48,7 +46,7 @@ legend =plt.legend(loc='upper right')
 legend.get_frame().set_alpha(0.9)
 plt.show()
 
-#####################
+""" #####################
 # inizia nuovo grafico 
 
 # Inizializza le liste per i dati
@@ -112,4 +110,4 @@ plt.xlabel('Connection probability')
 plt.ylabel('Entropy')
 plt.grid(True)
 plt.legend()
-plt.show()
+plt.show() """

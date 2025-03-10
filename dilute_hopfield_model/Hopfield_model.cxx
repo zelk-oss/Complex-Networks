@@ -240,6 +240,49 @@ void Hopfield_Network::Weak_Weight_Destroyer(int n) // Destroy randomly the n li
     }
 }
 
+void Hopfield_Network::Ba_network(int m)
+{
+    std::vector<int> new_adjacency(0,N_quad * N_quad );
+    std::vector<int> degree;
+    std::vector<int> nodeList;
+    for(int i = 0; i < m + 1 ; i++) //initialize the core connected network
+    {
+        for(int j = i + 1; j < m + 1; j++)
+        {
+            new_adjacency[i * N_quad + j]= 1;
+            new_adjacency[j * N_quad + i]= 1;
+            nodeList.pushback(i);
+            nodeList.pushback(j);//this ensure the preferential attachment
+        }
+        degree.pushback(m);
+    }
+
+    for (int newNode = m+1; newNode < N_quad; newNode++) //add the new nodes 
+    {
+        std::vector<int> chosen;
+        while (chosen.size() < m) {
+            int randomIndex = rand() % nodeList.size();
+            int selectedNode = nodeList[randomIndex];
+            if (std::find(chosen.begin(), chosen.end(), selectedNode) == chosen.end()) {
+                chosen.push_back(selectedNode);
+            }
+        }
+        for (int connectedNode : chosen) {
+            adjacencyMatrix[newNode * N_quad + connectedNode] = adjacencyMatrix[connectedNode* N_quad + newNode] = 1;
+            degree[connectedNode]++;
+            nodeList.push_back(newNode);
+            nodeList.push_back(connectedNode);
+        }
+        degree.pushback(m);
+    }
+
+    Adjacency = new_Adjacency;
+    
+    for(int i = 0; i < N_quad * N_quad; i++){
+        if(Adjacency[i] == 0){Weight[i] = 0;}
+    }
+}
+
 std::vector<int> Hopfield_Network::Laplacian() // Compute the laplacian matrix
 {
     std::vector<int> laplacian;

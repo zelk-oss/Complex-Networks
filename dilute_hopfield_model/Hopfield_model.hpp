@@ -50,6 +50,8 @@ public:
 
     void Weak_Weight_Destroyer(int n); // Destroy n link chosen randomly
 
+    void Ba_network(int m); // create a Barabasi Albert scale free network
+
     std::vector<int> Laplacian(); // Compute the laplacian matrix
 
     double Local_Clustering(); // Compute the local clustering coefficient
